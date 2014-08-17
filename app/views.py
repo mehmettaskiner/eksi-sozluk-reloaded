@@ -55,18 +55,7 @@ def author(nickname):
 	if author == None:
 		flash('Author ' + nickname + ' not found.')
 		return redirect(url_for('index'))
-	entries = [
-		{
-			'title': 'eksi sozluk reloaded',
-			'author': {'nickname': 'taskiner'},
-			'body': 'an eksi-sozluk clone written with python and flask'
-		},
-		{
-			'title': 'ssg',
-			'author': {'nickname': 'taskiner'},
-			'body': 'founder of eksi-sozluk'
-		}
-	] # fake entries
+	entries = Entry.query.filter_by(user_id = author.id)
 	return render_template('author.html',
 		author = author,
 		entries = entries)
