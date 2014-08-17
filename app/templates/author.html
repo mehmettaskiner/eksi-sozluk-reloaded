@@ -1,1 +1,11 @@
-{{author.nickname}}
+<!-- extend base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Author: {{author.nickname}}</h1>
+<hr>
+{% for entry in entries %}
+	<p><h3>{{entry.title}}</h3></p>
+	<p>{{entry.body}}</p>
+{% endfor %}
+{% endblock %}
