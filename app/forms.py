@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import TextField, BooleanField, PasswordField
+from wtforms import TextField, BooleanField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired
 
 class LoginForm(Form):
@@ -8,4 +8,4 @@ class LoginForm(Form):
 	remember_me = BooleanField('remember_me', default = False)
 
 class SubmitEntry(Form):
-	body = TextField('body', [DataRequired()])
+	body = TextAreaField('body', [DataRequired()])

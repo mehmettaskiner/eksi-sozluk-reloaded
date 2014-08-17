@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, current_user, login_required, logout_user
 from app import app, db, lm
-from forms import LoginForm
-from models import User, ROLE_USER, ROLE_ADMIN
+from forms import LoginForm, SubmitEntry
+from models import User, Entry, Title, ROLE_USER, ROLE_ADMIN
 from datetime import datetime
 
 @lm.user_loader
@@ -21,25 +21,14 @@ def before_request():
 @app.route('/index')
 def index():
 	if g.user is not None and g.user.is_authenticated():
-		user = g.user
+		author = g.user
 	else:
-		user = {'nickname': 'visitor'}
-	entries = [
-		{
-			'title': 'eksi sozluk reloaded',
-			'author': {'nickname': 'taskiner'},
-			'body': 'an eksi-sozluk clone written with python and flask'
-		},
-		{
-			'title': 'ssg',
-			'author': {'nickname': 'taskiner'},
-			'body': 'founder of eksi-sozluk'
-		}
-	]
+		author = {'nickname': 'visitor'}
+	titles = Title.query.all()
 	return render_template("index.html",
 		title = 'home',
-		author = user,
-		entries = entries)
+		author = author,
+		titles = titles)
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
@@ -101,14 +90,32 @@ def login():
 		title = 'login',
 		form = form)
 
+@app.route('/title/<title_id>', methods = ['GET', 'POST'])
+def title(title_id):
+	form = SubmitEntry()
+	title = Title.query.filter_by(id = title_id).first()
+	entries = Entry.query.filter_by(title_id= title_id).all()
+	# TODO: if title not found, let user add it.
+	if form.validate_on_submit():
+		entry = Entry(body = form.body.data, 
+			timestamp = datetime.utcnow(), 
+			user_id = current_user.id,
+			title_id = title_id)
+		db.session.add(entry)
+		db.session.commit()
+		return redirect(url_for('title', title_id = title_id))
+	return render_template('title.html',
+		title = title.title_name,
+		ttl = title,
+		entries = entries,
+		form = form)
+
 @app.route('/logout')
 @login_required
 def logout():
 	logout_user()
 	flash('logout succesfull')
 	return redirect(url_for('index'))
-
-
 
 
 

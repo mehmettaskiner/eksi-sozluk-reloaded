@@ -1,0 +1,22 @@
+<!-- extends base layout -->
+{% extends "base.html" %}
+{% block content %}
+
+	<h3>{{ttl.title_name}}</h3>
+	<ul>
+		{% for entry in entries %}
+			<li>{{entry.body}} <i>@{{entry.user_id}}</i>
+		{% endfor %}
+	</ul>
+	{% if g.user.is_authenticated() %}
+	<div name="submit_entry">
+		<form action="" method="post" name="submit_entry">
+			{{form.hidden_tag()}}
+			<i>what do you think about {{ttl.title_name}}</i><br>
+			<p>{{form.body(size = 200)}}</p>
+			<p><input type="submit" value="save"></p>
+		</form>
+	</div>
+	{% endif %}
+
+{% endblock %}

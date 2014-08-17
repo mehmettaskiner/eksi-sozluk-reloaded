@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>Hello, {{author.nickname}}!<h1>
-	{% for entry in entries %}
-		<p><h3>{{entry.title}}</h3></p>
-		<p>{{entry.body}}</p>
-		<p>- {{entry.author.nickname}}</p>
+	<h1>Hello, {{author.nickname}}!</h1>
+	{% for title in titles %}
+		<ul>
+			<li><a href="{{url_for('title', title_id = title.id)}}">{{title.title_name}}</a></li>
+		</ul>
 	{% endfor %}
 {% endblock %}
