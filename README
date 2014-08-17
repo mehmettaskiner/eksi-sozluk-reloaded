@@ -1,1 +1,17 @@
 eksi sozluk clone with pyhthon and flask
+
+requirements:
+
+python v2.7
+flask
+flask-login
+flask-mail
+sqlalchemy
+flask-sqlalchemy
+sqlalchemy-migrate
+flask-whooshalchemy
+flask-wtf
+pytz
+flup
+
+`educational purposes only`
