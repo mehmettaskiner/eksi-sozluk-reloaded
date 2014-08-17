@@ -3,6 +3,7 @@ from flask.ext.login import login_user, current_user, login_required, logout_use
 from app import app, db, lm
 from forms import LoginForm
 from models import User, ROLE_USER, ROLE_ADMIN
+from datetime import datetime
 
 @lm.user_loader
 def load_user(id):
@@ -11,6 +12,10 @@ def load_user(id):
 @app.before_request
 def before_request():
 	g.user = current_user
+	if g.user.is_authenticated():
+		g.user.last_seen = datetime.utcnow()
+		db.session.add(g.user)
+		db.session.commit()
 
 @app.route('/')
 @app.route('/index')

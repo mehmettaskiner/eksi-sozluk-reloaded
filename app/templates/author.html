@@ -5,7 +5,6 @@
 <h1>Author: {{author.nickname}}</h1>
 <hr>
 {% for entry in entries %}
-	<p><h3>{{entry.title}}</h3></p>
-	<p>{{entry.body}}</p>
+	{% include 'entry.html' %}	
 {% endfor %}
 {% endblock %}
