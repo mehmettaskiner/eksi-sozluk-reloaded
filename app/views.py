@@ -84,7 +84,9 @@ def title(title_id):
 	form = SubmitEntry()
 	title = Title.query.filter_by(id = title_id).first()
 	entries = Entry.query.filter_by(title_id= title_id).all()
-	# TODO: if title not found, let user add it.
+	if title == None:
+		pass
+
 	if form.validate_on_submit():
 		entry = Entry(body = form.body.data, 
 			timestamp = datetime.utcnow(), 

@@ -5,7 +5,7 @@
 	<h3>{{ttl.title_name}}</h3>
 	<ul>
 		{% for entry in entries %}
-			<li>{{entry.body}} <i>@{{entry.user_id}}</i>
+			<li>{{entry.body}} <i>@{{entry.author.nickname}}</i>
 		{% endfor %}
 	</ul>
 	{% if g.user.is_authenticated() %}
@@ -13,7 +13,7 @@
 		<form action="" method="post" name="submit_entry">
 			{{form.hidden_tag()}}
 			<i>what do you think about {{ttl.title_name}}</i><br>
-			<p>{{form.body(size = 200)}}</p>
+			<p>{{form.body(rows = 8, cols = 80)}}</p>
 			<p><input type="submit" value="save"></p>
 		</form>
 	</div>
