@@ -33,7 +33,7 @@ def index():
 	]
 	return render_template("index.html",
 		title = 'home',
-		user = user,
+		author = user,
 		entries = entries)
 
 @app.route('/register', methods = ['GET', 'POST'])
@@ -54,6 +54,28 @@ def register():
 	return render_template('register.html',
 		title = 'sign up',
 		form = form)
+
+@app.route('/author/<nickname>')
+def author(nickname):
+	author = User.query.filter_by(nickname = nickname).first()
+	if author == None:
+		flash('Author ' + nickname + ' not found.')
+		return redirect(url_for('index'))
+	entries = [
+		{
+			'title': 'eksi sozluk reloaded',
+			'author': {'nickname': 'taskiner'},
+			'body': 'an eksi-sozluk clone written with python and flask'
+		},
+		{
+			'title': 'ssg',
+			'author': {'nickname': 'taskiner'},
+			'body': 'founder of eksi-sozluk'
+		}
+	] # fake entries
+	return render_template('author.html',
+		author = author,
+		entries = entries)
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
@@ -80,6 +102,7 @@ def logout():
 	logout_user()
 	flash('logout succesfull')
 	return redirect(url_for('index'))
+
 
 
 

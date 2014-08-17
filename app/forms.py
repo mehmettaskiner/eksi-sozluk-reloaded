@@ -6,3 +6,6 @@ class LoginForm(Form):
 	nickname = TextField('email', validators = [DataRequired()])
 	password = PasswordField('password', validators = [DataRequired()])
 	remember_me = BooleanField('remember_me', default = False)
+
+class SubmitEntry(Form):
+	body = TextField('body', [DataRequired()])
