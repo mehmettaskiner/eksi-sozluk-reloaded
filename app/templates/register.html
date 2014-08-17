@@ -1,0 +1,26 @@
+<!-- extend from base layout -->
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>register</h1>
+	<form action="" method="post" name="register">
+		{{form.hidden_tag()}}
+		<p>nickname:<br>
+			{{form.nickname(size=40)}}<br>
+			{% for error in form.errors.nickname %}
+				{% if error %}
+					<span style="color: red;">[{{error}}]</span><br>
+				{% endif %}
+			{% endfor %}
+		</p>
+		<p>password:<br>
+			{{form.password(size=40)}}<br>
+			{% for error in form.errors.password %}
+				{% if error %}
+					<span style="color: red;">[{{error}}]</span>
+				{% endif %}<br>
+			{% endfor %}
+		</p>
+		<p><input type="submit" value="register"></p>
+	</form>
+{% endblock %}
