@@ -12,17 +12,14 @@ def load_user(id):
 @app.before_request
 def before_request():
 	g.user = current_user
-	g.search_form = SearchTitle()
-	if g.user.is_authenticated():
-		g.user.last_seen = datetime.utcnow()
-		db.session.add(g.user)
-		db.session.commit()
+	g.search_form = SearchTitle() # attached searched form to global g user variable to make sure it is available from everywhere
 
 @app.route('/')
 @app.route('/index')
 def index():
 	if g.user is not None and g.user.is_authenticated():
 		author = g.user
+		
 	else:
 		author = {'nickname': 'visitor'}
 	titles = Title.query.all()
@@ -77,6 +74,7 @@ def login():
 			flash('wrong username or password')
 			return redirect(url_for('login'))
 		login_user(registered_user)
+		last_seen()	
 		flash('logged in succesfully.')
 		return redirect(request.args.get('next') or url_for('index'))
 	return render_template('login.html',
@@ -124,5 +122,9 @@ def logout():
 	flash('logout succesfull')
 	return redirect(url_for('index'))
 
-
-
+# custom functions
+def last_seen():
+	if g.user.is_authenticated():
+		g.user.last_seen = datetime.utcnow()
+		db.session.add(g.user)
+		db.session.commit()
