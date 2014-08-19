@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, current_user, login_required, logout_user
 from app import app, db, lm
-from forms import LoginForm, SubmitEntry
+from forms import LoginForm, SubmitEntry, SearchTitle
 from models import User, Entry, Title, ROLE_USER, ROLE_ADMIN
 from datetime import datetime
 
@@ -12,6 +12,7 @@ def load_user(id):
 @app.before_request
 def before_request():
 	g.user = current_user
+	g.search_form = SearchTitle()
 	if g.user.is_authenticated():
 		g.user.last_seen = datetime.utcnow()
 		db.session.add(g.user)
@@ -25,10 +26,12 @@ def index():
 	else:
 		author = {'nickname': 'visitor'}
 	titles = Title.query.all()
+
 	return render_template("index.html",
 		title = 'home',
 		author = author,
-		titles = titles)
+		titles = titles,
+		)
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
@@ -57,6 +60,7 @@ def author(nickname):
 		return redirect(url_for('index'))
 	entries = Entry.query.filter_by(user_id = author.id)
 	return render_template('author.html',
+		title = author.nickname,
 		author = author,
 		entries = entries)
 
@@ -100,6 +104,13 @@ def title(title_id):
 		ttl = title,
 		entries = entries,
 		form = form)
+
+@app.route('/search', methods = ['POST'])
+def search():
+	if not g.search_form.validate_on_submit():
+		return redirect(url_for('index'))
+	title = Title.query.filter_by(title_name = g.search_form.data['search']).first()
+	return redirect(url_for('title', title_id = title.id))
 
 @app.route('/logout')
 @login_required

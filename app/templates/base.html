@@ -16,6 +16,8 @@
 			{% else %}
 			| <a href="{{url_for('login')}}">login</a> | <a href="{{url_for('register')}}">register</a>
 			{% endif %}
+			| <form style="display: inline;" action="{{url_for('search')}}" method="post" name="search">{{g.search_form.hidden_tag()}}{{g.search_form.search(size=20)}}<input type="submit" value="search"></form>
+
 		</div>
 		<hr>
 		{% with messages = get_flashed_messages() %}
