@@ -109,7 +109,12 @@ def title(title_id):
 def search():
 	if not g.search_form.validate_on_submit():
 		return redirect(url_for('index'))
-	title = Title.query.filter_by(title_name = g.search_form.data['search']).first()
+	title_name = g.search_form.data['search']
+	title = Title.query.filter_by(title_name = title_name).first()
+	if title == None:
+		title = Title(title_name = title_name)
+		db.session.add(title)
+		db.session.commit()
 	return redirect(url_for('title', title_id = title.id))
 
 @app.route('/logout')
