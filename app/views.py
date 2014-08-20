@@ -22,12 +22,12 @@ def index():
 		
 	else:
 		author = {'nickname': 'visitor'}
-	titles = Title.query.all()
+	non_empty_titles = Title.query.join(Entry).filter(Entry.title_id == Title.id).all()
 
 	return render_template("index.html",
 		title = 'home',
 		author = author,
-		titles = titles,
+		titles = non_empty_titles,
 		)
 
 @app.route('/register', methods = ['GET', 'POST'])
