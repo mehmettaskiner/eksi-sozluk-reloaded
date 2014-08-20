@@ -14,22 +14,17 @@ def before_request():
 	g.user = current_user
 	g.search_form = SearchTitle() # attached searched form to global g user variable to make sure it is available from everywhere
 
+# index page
 @app.route('/')
 @app.route('/index')
 def index():
-	if g.user is not None and g.user.is_authenticated():
-		author = g.user
-		
-	else:
-		author = {'nickname': 'visitor'}
 	non_empty_titles = Title.query.join(Entry).filter(Entry.title_id == Title.id).all()
-
 	return render_template("index.html",
 		title = 'home',
-		author = author,
 		titles = non_empty_titles,
 		)
 
+# register page
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
 	form = LoginForm()
@@ -49,6 +44,7 @@ def register():
 		title = 'sign up',
 		form = form)
 
+# author's profiles
 @app.route('/author/<nickname>')
 def author(nickname):
 	author = User.query.filter_by(nickname = nickname).first()
@@ -61,6 +57,7 @@ def author(nickname):
 		author = author,
 		entries = entries)
 
+# login page
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
 	if g.user is not None and g.user.is_authenticated():
@@ -81,14 +78,14 @@ def login():
 		title = 'login',
 		form = form)
 
+# title view page
 @app.route('/title/<title_id>', methods = ['GET', 'POST'])
 def title(title_id):
 	form = SubmitEntry()
 	title = Title.query.filter_by(id = title_id).first()
 	entries = Entry.query.filter_by(title_id= title_id).all()
 	if title == None:
-		pass
-
+		return redirect(url_for('index'))
 	if form.validate_on_submit():
 		entry = Entry(body = form.body.data, 
 			timestamp = datetime.utcnow(), 
@@ -114,6 +111,13 @@ def search():
 		db.session.add(title)
 		db.session.commit()
 	return redirect(url_for('title', title_id = title.id))
+
+@app.route('/delete/<entry_id>', methods = ['GET', 'POST'])
+def delete(entry_id):
+	entry = Entry.query.filter_by(id = entry_id).first()
+	db.session.delete(entry)
+	db.session.commit()
+	return redirect(url_for('title', title_id = entry.title_id))
 
 @app.route('/logout')
 @login_required

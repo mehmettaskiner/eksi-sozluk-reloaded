@@ -1,7 +1,6 @@
+<!-- extends base layout -->
 {% extends "base.html" %}
-
-{% block content %}
-	<h1>Hello, {{author.nickname}}!</h1>
+{% block leftframe %}
 	{% for title in titles %}
 		<ul>
 			<li><a href="{{url_for('title', title_id = title.id)}}">{{title.title_name}}</a></li>

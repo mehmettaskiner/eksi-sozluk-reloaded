@@ -1,11 +1,10 @@
 <!-- extends base layout -->
 {% extends "base.html" %}
 {% block content %}
-
 	<h3>{{ttl.title_name}}</h3>
 	<ul>
 		{% for entry in entries %}
-			<li>{{entry.body}} <i>@{{entry.author.nickname}}</i>
+			<li>{{entry.body}} <i>@{{entry.author.nickname}}</i>{% if g.user.id == entry.author.id %}<a href="{{url_for('delete', entry_id = entry.id)}}">- delete</a> {% endif %}
 		{% endfor %}
 	</ul>
 	{% if g.user.is_authenticated() %}
