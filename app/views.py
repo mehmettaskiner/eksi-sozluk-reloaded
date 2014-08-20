@@ -112,13 +112,18 @@ def search():
 		db.session.commit()
 	return redirect(url_for('title', title_id = title.id))
 
+# entry delete function
 @app.route('/delete/<entry_id>', methods = ['GET', 'POST'])
 def delete(entry_id):
 	entry = Entry.query.filter_by(id = entry_id).first()
-	db.session.delete(entry)
-	db.session.commit()
+	if g.user.id == entry.user_id:
+		db.session.delete(entry)
+		db.session.commit()
+	else:
+		flash('you are not allowed to do this.')
 	return redirect(url_for('title', title_id = entry.title_id))
 
+# logout
 @app.route('/logout')
 @login_required
 def logout():
