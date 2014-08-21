@@ -1,0 +1,7 @@
+{% block leftframe %}
+    {% for title in titles %}
+        <ul>
+            <li><a href="{{url_for('title', title_id = title.id)}}">{{title.title_name}}</a></li>
+        </ul>
+    {% endfor %}
+{% endblock %}

@@ -1,9 +1,13 @@
+#-*- coding: utf8 -*-
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, current_user, login_required, logout_user
 from app import app, db, lm
 from forms import LoginForm, SubmitEntry, SearchTitle
 from models import User, Entry, Title, ROLE_USER, ROLE_ADMIN
 from datetime import datetime
+
+# send titles = fetch_non_empty_titles() with render_template
+# where you want to show left frame
 
 @lm.user_loader
 def load_user(id):
@@ -12,13 +16,13 @@ def load_user(id):
 @app.before_request
 def before_request():
 	g.user = current_user
-	g.search_form = SearchTitle() # attached searched form to global g user variable to make sure it is available from everywhere
+	g.search_form = SearchTitle() # attached search form to global g user variable to make sure it is available from everywhere
 
 # index page
 @app.route('/')
 @app.route('/index')
 def index():
-	non_empty_titles = Title.query.join(Entry).filter(Entry.title_id == Title.id).all()
+	non_empty_titles = fetch_non_empty_titles()
 	return render_template("index.html",
 		title = 'home',
 		titles = non_empty_titles,
@@ -42,7 +46,8 @@ def register():
 		return redirect(url_for('index'))
 	return render_template('register.html',
 		title = 'sign up',
-		form = form)
+		form = form,
+		titles = fetch_non_empty_titles())
 
 # author's profiles
 @app.route('/author/<nickname>')
@@ -55,7 +60,8 @@ def author(nickname):
 	return render_template('author.html',
 		title = author.nickname,
 		author = author,
-		entries = entries)
+		entries = entries,
+		titles = fetch_non_empty_titles())
 
 # login page
 @app.route('/login', methods = ['GET', 'POST'])
@@ -76,7 +82,8 @@ def login():
 		return redirect(request.args.get('next') or url_for('index'))
 	return render_template('login.html',
 		title = 'login',
-		form = form)
+		form = form,
+		titles = fetch_non_empty_titles())
 
 # title view page
 @app.route('/title/<title_id>', methods = ['GET', 'POST'])
@@ -98,7 +105,8 @@ def title(title_id):
 		title = title.title_name,
 		ttl = title,
 		entries = entries,
-		form = form)
+		form = form,
+		titles = fetch_non_empty_titles())
 
 @app.route('/search', methods = ['POST'])
 def search():
@@ -137,3 +145,6 @@ def last_seen():
 		g.user.last_seen = datetime.utcnow()
 		db.session.add(g.user)
 		db.session.commit()
+
+def fetch_non_empty_titles():
+	return Title.query.join(Entry).filter(Entry.title_id == Title.id).all()

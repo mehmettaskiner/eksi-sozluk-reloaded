@@ -30,7 +30,7 @@
 			{% endif %}
 		{% endwith %}
 		<div name="leftframe">
-			{% block leftframe %}{% endblock %}
+			{% block leftframe %}{% include "left_frame.html" %}{% endblock %}
 		</div>
 		
 		{% block content %}{% endblock %}
