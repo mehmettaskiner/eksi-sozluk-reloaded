@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
@@ -10,6 +11,11 @@ class User(db.Model):
 	role = db.Column(db.SmallInteger, default = ROLE_USER)
 	entries = db.relationship('Entry', backref = 'author', lazy = 'dynamic')
 	last_seen = db.Column(db.DateTime)
+
+	def save_last_seen(self):
+		self.last_seen = datetime.utcnow()
+		db.session.add(self)
+		db.session.commit()
 
 	def is_authenticated(self):
 		return True
@@ -40,6 +46,9 @@ class Title(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	title_name = db.Column(db.String(50))
 	entries = db.relationship('Entry', backref = 'title', lazy = 'dynamic')
+
+	def fetch_non_empty_titles(self):
+		return Title.query.join(Entry).filter(Entry.title_id == Title.id).all()
 
 	def __repr__(self):
 		return '<Title %r>' % (self.title_name)
