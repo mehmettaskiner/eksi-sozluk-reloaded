@@ -1,0 +1,9 @@
+<!-- extends base layout -->
+{% extends "base.html" %}
+{% block leftframe %}
+	{% for entry in titles %}
+		<ul>
+			<li><a href="{{url_for('entry', entry_id = entry.id)}}">{{entry.title.title_name}}</a> - <i>@{{entry.author.nickname}}</i></li>
+		</ul>
+	{% endfor %}
+{% endblock %}

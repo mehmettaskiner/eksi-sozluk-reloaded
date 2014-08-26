@@ -11,6 +11,7 @@
 		<div>
 			eksi sozluk reloaded: <a href="/index">Home</a>
 			{% if g.user.is_authenticated() %}
+			| <a href="{{url_for('buddy')}}">buddy</a>
 			| <a href="{{url_for('author', nickname = g.user.nickname)}}">profile</a>
 			| <a href="{{url_for('logout')}}">logout</a>
 			{% else %}

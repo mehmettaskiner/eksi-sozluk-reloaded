@@ -3,10 +3,12 @@
 
 {% block content %}
 <h1>Author: {{author.nickname}}</h1>
+{% if g.user.is_authenticated() and g.user.id != author.id%}
 {% if not g.user.is_following(author) %}
 <a href="{{url_for('follow', nickname=author.nickname)}}">buddy</a>
 {% else %}
 <a href="{{url_for('unfollow', nickname=author.nickname)}}">un-buddy</a>
+{% endif %}
 {% endif %}
 <hr>
 {% for entry in entries %}

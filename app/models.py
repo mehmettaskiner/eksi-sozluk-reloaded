@@ -23,8 +23,8 @@ class User(db.Model):
 		backref = db.backref('followers', lazy = 'dynamic'),
 		lazy = 'dynamic')
 
-	def followed_titles(self):
-		return Title.query.join(followers, (followers.c.followed_id == Entry.user_id).filter(followers.c.follower_id == self.id))
+	def followed_entries(self):
+		return Entry.query.join(followers, (followers.c.followed_id == Entry.user_id)).filter(followers.c.follower_id == self.id).order_by(Entry.timestamp.desc())
 
 	def save_last_seen(self):
 		self.last_seen = datetime.utcnow()

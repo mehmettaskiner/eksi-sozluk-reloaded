@@ -156,6 +156,7 @@ def follow(nickname):
 	return redirect(url_for('author', nickname = nickname))
 
 @app.route('/unfollow/<nickname>')
+@login_required
 def unfollow(nickname):
 	user = User.query.filter_by(nickname = nickname).first()
 	if user == None:
@@ -172,6 +173,42 @@ def unfollow(nickname):
 	db.session.commit()
 	flash(nickname + 'is not your buddy anymore.')
 	return redirect(url_for('author', nickname = nickname))
+
+# buddies' titles
+@app.route('/buddy')
+@login_required
+def buddy():
+	followed_entries = g.user.followed_entries().all()
+	followed_titles = []
+	for entry in followed_entries:
+		followed_titles.append(entry.title)
+
+	return render_template("buddy.html",
+		title = 'buddy entries',
+		titles = followed_entries,
+		)
+
+@app.route('/entry/<entry_id>', methods = ['GET', 'POST'])
+def entry(entry_id):
+	form = SubmitEntry()
+	entry = Entry.query.filter_by(id = entry_id).first()
+	entries = []
+	entries.append(entry)
+	title = Title.query.filter_by(id = entry.title_id).first()
+	if form.validate_on_submit():
+		new_entry = Entry(body = form.body.data, 
+			timestamp = datetime.utcnow(), 
+			user_id = current_user.id,
+			title_id = title_id)
+		db.session.add(new_entry)
+		db.session.commit()
+		return redirect(url_for('title', title_id = title_id))
+	return render_template('title.html',
+		title = title.title_name,
+		ttl = title,
+		entries = entries,
+		form = form,
+		titles = Title.fetch_non_empty_titles(Title()))
 
 # logout
 @app.route('/logout')
