@@ -1,7 +1,7 @@
 <!-- extends base layout -->
 {% extends "base.html" %}
 {% block content %}
-	<h3>{{ttl.title_name}}</h3>
+	<h3><a href ="{{url_for("title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h3>
 	<ul>
 		{% for entry in entries %}
 			<li>{{entry.body}} <i>@<a href="{{url_for('author', nickname = entry.author.nickname)}}">{{entry.author.nickname}}</a></i>{% if g.user.id == entry.author.id %}<a href="{{url_for('delete', entry_id = entry.id)}}">- delete</a> {% endif %}
