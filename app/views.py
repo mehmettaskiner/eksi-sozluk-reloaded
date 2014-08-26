@@ -180,6 +180,9 @@ def unfollow(nickname):
 def buddy():
 	followed_entries = g.user.followed_entries().all()
 	followed_titles = []
+	if len(followed_entries) == 0:
+		flash('you have no buddy entries.')
+		return redirect(url_for('index'))
 	for entry in followed_entries:
 		followed_titles.append(entry.title)
 

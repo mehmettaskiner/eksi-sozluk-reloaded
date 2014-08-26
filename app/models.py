@@ -75,7 +75,7 @@ class Title(db.Model):
 	entries = db.relationship('Entry', backref = 'title', lazy = 'dynamic')
 
 	def fetch_non_empty_titles(self):
-		return Title.query.join(Entry).filter(Entry.title_id == Title.id).all()
+		return Title.query.join(Entry).filter(Entry.title_id == Title.id).order_by(Entry.timestamp.desc()).all()
 
 	def __repr__(self):
 		return '<Title %r>' % (self.title_name)
