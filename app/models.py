@@ -4,6 +4,11 @@ from datetime import datetime
 ROLE_USER = 0
 ROLE_ADMIN = 1
 
+followers = db.Table('followers',
+	db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+	db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+	)
+
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	nickname = db.Column(db.String(64), index = True, unique = True)
@@ -11,11 +16,33 @@ class User(db.Model):
 	role = db.Column(db.SmallInteger, default = ROLE_USER)
 	entries = db.relationship('Entry', backref = 'author', lazy = 'dynamic')
 	last_seen = db.Column(db.DateTime)
+	followed = db.relationship('User',
+		secondary = followers,
+		primaryjoin = (followers.c.follower_id == id),
+		secondaryjoin = (followers.c.followed_id == id),
+		backref = db.backref('followers', lazy = 'dynamic'),
+		lazy = 'dynamic')
+
+	def followed_titles(self):
+		return Title.query.join(followers, (followers.c.followed_id == Entry.user_id).filter(followers.c.follower_id == self.id))
 
 	def save_last_seen(self):
 		self.last_seen = datetime.utcnow()
 		db.session.add(self)
 		db.session.commit()
+
+	def follow(self, user):
+		if not self.is_following(user):
+			self.followed.append(user)
+			return self
+
+	def unfollow(self, user):
+		if self.is_following(user):
+			self.followed.remove(user)
+			return self
+
+	def is_following(self, user):
+		return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
 	def is_authenticated(self):
 		return True

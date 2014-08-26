@@ -125,6 +125,7 @@ def search():
 
 # entry delete function
 @app.route('/delete/<entry_id>', methods = ['GET', 'POST'])
+@login_required
 def delete(entry_id):
 	entry = Entry.query.filter_by(id = entry_id).first()
 	if g.user.id == entry.user_id:
@@ -133,6 +134,44 @@ def delete(entry_id):
 	else:
 		flash('you are not allowed to do this.')
 	return redirect(url_for('title', title_id = entry.title_id))
+
+# add buddy function
+@app.route('/follow/<nickname>')
+@login_required
+def follow(nickname):
+	user = User.query.filter_by(nickname = nickname).first()
+	if user == None:
+		flash('Author ' + nickname + ' not found.')
+		return redirect(url_for('index'))
+	if user == g.user:
+		flash("You can't follow yourself!")
+		return redirect(url_for('index'))
+	u = g.user.follow(user)
+	if u is None:
+		flash('Cannot follow ' + nickname + '.')
+		return redirect(url_for('author', nickname = nickname))
+	db.session.add(u)
+	db.session.commit()
+	flash(nickname + ' is your buddy now.')
+	return redirect(url_for('author', nickname = nickname))
+
+@app.route('/unfollow/<nickname>')
+def unfollow(nickname):
+	user = User.query.filter_by(nickname = nickname).first()
+	if user == None:
+		flash('User ' + nickname + ' not found.')
+		return redirect(url_for('index'))
+	if user == g.user:
+		flash("you can't unbuddy yourself.")
+		return redirect(url_for('author', nickname = nickname))
+	u = g.user.unfollow(user)
+	if u is None:
+		flash('Cannot unfollow ' + nickname + '.')
+		return redirect(url_for('author', nickname = nickname))
+	db.session.add(u)
+	db.session.commit()
+	flash(nickname + 'is not your buddy anymore.')
+	return redirect(url_for('author', nickname = nickname))
 
 # logout
 @app.route('/logout')
