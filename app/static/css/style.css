@@ -2,7 +2,7 @@ body {
     background-color: #ebebeb;
 }
 div {
-    display: inline-block;
+    display: inline;
 }
 a a:hover {
     text-decoration: none;
@@ -10,6 +10,7 @@ a a:hover {
 #leftframe {
     float: left;
     width: 250px;
+    height: 100vh;
     margin-left: 10px;
     position: relative;
 }
