@@ -10,8 +10,9 @@ features:
 * create title
 * TODO: entry voting
 
-install requirements:
-* pip install -r "requirements.txt"
+installation:
+* create virtualenv named "flask": "python virtualenv.py flask"
+* flask/bin/pip install -r "requirements.txt"
 
 to create db:
 * ./db_create.py
