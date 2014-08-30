@@ -1,7 +1,8 @@
 <!-- extends base layout -->
 {% extends "base.html" %}
 {% block content %}
-	<h3><a href ="{{url_for("title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h3>
+<div class="title">
+	<h1><a href ="{{url_for("title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h1>
 	<ul>
 		{% for entry in entries %}
 			<li>{{entry.body}} <i>@<a href="{{url_for('author', nickname = entry.author.nickname)}}">{{entry.author.nickname}}</a></i>{% if g.user.id == entry.author.id %}<a href="{{url_for('delete', entry_id = entry.id)}}">- delete</a> {% endif %}
@@ -11,11 +12,11 @@
 	<div name="submit_entry">
 		<form action="" method="post" name="submit_entry">
 			{{form.hidden_tag()}}
-			<i>what do you think about {{ttl.title_name}}</i><br>
+			<em>what do you think about <strong>{{ttl.title_name}}</strong></em><br>
 			<p>{{form.body(rows = 8, cols = 80)}}</p>
 			<p><input type="submit" value="save"></p>
 		</form>
 	</div>
 	{% endif %}
-
+</div>
 {% endblock %}

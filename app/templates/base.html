@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="./style.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css">
 		{% if title %}
 			<title>{{title}} - eksi sozluk reloaded</title>
 		{% else %}
 			<title>eksi sozluk reloaded</title>
 		{% endif %}
+		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	</head>
 
 	<body>
-		<div>
+		<div class="navbar navbar-default navbar-fixed-top navbar-collapse">
 			eksi sozluk reloaded: <a href="/index">Home</a>
 			{% if g.user.is_authenticated() %}
 			| <a href="{{url_for('buddy')}}">buddy</a>
@@ -19,24 +22,28 @@
 			{% else %}
 			| <a href="{{url_for('login')}}">login</a> | <a href="{{url_for('register')}}">register</a>
 			{% endif %}
-			| <form style="display: inline;" action="{{url_for('search')}}" method="post" name="search">{{g.search_form.hidden_tag()}}{{g.search_form.search(size=20)}}<input type="submit" value="search"></form>
-
+			| <form class="navbar-form form-search-position" action="{{url_for('search')}}" method="post" name="search">{{g.search_form.hidden_tag()}}{{g.search_form.search(class="form-control", placeholder="search")}} <button class="btn btn-default" type="submit">get</button></form>
 		</div>
 		<hr>
 		{% with messages = get_flashed_messages() %}
 			{% if messages %}
+			<div class="alert alert-success alert-dismissible" role="alert">
+			<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<ul>
 					{% for message in messages %}
 						<li>{{message}}</li>
 					{% endfor %}
-				</ul>	
+				</ul>
+			</div>	
 			{% endif %}
 		{% endwith %}
-		<div name="leftframe">
+		<div id="leftframe">
+			<h1>today</h1>
 			{% block leftframe %}{% include "left_frame.html" %}{% endblock %}
 		</div>
-		
+		<div class="container">
 		{% block content %}{% endblock %}
+		</div>
 
 	</body>
 </html>

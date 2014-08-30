@@ -1,0 +1,24 @@
+body {
+    background-color: #ebebeb;
+}
+div {
+    display: inline-block;
+}
+a a:hover {
+    text-decoration: none;
+}
+#leftframe {
+    float: left;
+    width: 250px;
+    margin-left: 10px;
+    position: relative;
+}
+.form-signin-position {
+    position: relative;
+    width: 320px;
+    margin-left: 10px;
+    display: inline-block;
+}
+.form-search-position {
+    display: inline-block;
+}
