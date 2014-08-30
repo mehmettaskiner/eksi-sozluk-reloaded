@@ -1,9 +1,6 @@
 body {
     background-color: #ebebeb;
 }
-div {
-    display: inline;
-}
 a a:hover {
     text-decoration: none;
 }
@@ -22,4 +19,9 @@ a a:hover {
 }
 .form-search-position {
     display: inline-block;
+}
+.entry-detail {
+    text-align: right;
+    font-size: 0.8em;
+    padding: 5px 0px 5px 0px;
 }

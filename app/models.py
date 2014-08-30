@@ -65,6 +65,16 @@ class Entry(db.Model):
 	timestamp = db.Column(db.DateTime)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	title_id = db.Column(db.Integer, db.ForeignKey('title.id'))
+	positive_vote = db.Column(db.Integer)
+	negative_vote = db.Column(db.Integer)
+
+	def __init__(self, body, timestamp, title_id, user_id):
+		self.body = body
+		self.timestamp = timestamp
+		self.title_id = title_id
+		self.user_id = user_id
+		self.positive_vote = 0
+		self.negative_vote = 0
 
 	def __repr__(self):
 		return '<Entry %r>' % (self.body)

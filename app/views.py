@@ -131,6 +131,7 @@ def delete(entry_id):
 	if g.user.id == entry.user_id or g.user.role == ROLE_ADMIN:
 		db.session.delete(entry)
 		db.session.commit()
+		flash("entry deleted")
 	else:
 		flash('you are not allowed to do this.')
 	return redirect(url_for('title', title_id = entry.title_id))

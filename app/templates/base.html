@@ -10,6 +10,7 @@
 		{% endif %}
 		<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment-with-locales.min.js"></script>
 	</head>
 
 	<body>
@@ -27,8 +28,7 @@
 		<hr>
 		{% with messages = get_flashed_messages() %}
 			{% if messages %}
-			<div class="alert alert-success alert-dismissible" role="alert">
-			<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			<div class="alert alert-success" role="alert">
 				<ul>
 					{% for message in messages %}
 						<li>{{message}}</li>
