@@ -4,6 +4,8 @@ i am coding this just to learn how to develop web apps with flask.
 
 it's very simple clone, left frame is not working as it should be.
 
+* demo: http://178.62.151.28
+
 features:
 * buddy system
 * add entry
