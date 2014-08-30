@@ -128,7 +128,7 @@ def search():
 @login_required
 def delete(entry_id):
 	entry = Entry.query.filter_by(id = entry_id).first()
-	if g.user.id == entry.user_id:
+	if g.user.id == entry.user_id or g.user.role == ROLE_ADMIN:
 		db.session.delete(entry)
 		db.session.commit()
 	else:

@@ -5,7 +5,7 @@
 	<h1><a href ="{{url_for("title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h1>
 	<ul>
 		{% for entry in entries %}
-			<li>{{entry.body}} <i>@<a href="{{url_for('author', nickname = entry.author.nickname)}}">{{entry.author.nickname}}</a></i>{% if g.user.id == entry.author.id %}<a href="{{url_for('delete', entry_id = entry.id)}}">- delete</a> {% endif %}
+			<li>{{entry.body}} <i>@<a href="{{url_for('author', nickname = entry.author.nickname)}}">{{entry.author.nickname}}</a></i>{% if g.user.id == entry.author.id or g.user.role == 1 %}<a href="{{url_for('delete', entry_id = entry.id)}}">- delete</a> {% endif %}
 		{% endfor %}
 	</ul>
 	{% if g.user.is_authenticated() %}
