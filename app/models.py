@@ -23,6 +23,10 @@ class User(db.Model):
 		backref = db.backref('followers', lazy = 'dynamic'),
 		lazy = 'dynamic')
 
+	def submit_entry(self, entry):
+		db.session.add(entry)
+		db.session.commit()
+
 	def followed_entries(self):
 		return Entry.query.join(followers, (followers.c.followed_id == Entry.user_id)).filter(followers.c.follower_id == self.id).order_by(Entry.timestamp.desc())
 

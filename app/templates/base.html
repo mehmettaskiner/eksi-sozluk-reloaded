@@ -15,7 +15,7 @@
 
 	<body>
 		<div class="navbar navbar-default navbar-fixed-top navbar-collapse">
-			eksi sozluk reloaded: <a href="/index">Home</a>
+			eksi sozluk reloaded: <a href="/index">home</a>
 			{% if g.user.is_authenticated() %}
 			| <a href="{{url_for('buddy')}}">buddy</a>
 			| <a href="{{url_for('author', nickname = g.user.nickname)}}">profile</a>

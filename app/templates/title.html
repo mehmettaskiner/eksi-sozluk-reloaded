@@ -10,7 +10,7 @@
 			<li>
 				{{entry.body}}
 				<div class="entry-detail">
-					<time>{{momentjs(entry.timestamp).format('LLL')}}</time>
+					<time><a href="{{url_for("entry", entry_id=entry.id)}}">{{momentjs(entry.timestamp).format('LLL')}}</a></time>
 					 - <em><a href="{{url_for('author', nickname = entry.author.nickname)}}">@{{entry.author.nickname}}</a></em>{% if g.user.id == entry.author.id or g.user.role == 1 %}<a href="{{url_for('delete', entry_id = entry.id)}}"> - delete</a> {% endif %}
 				</div>
 			</li>

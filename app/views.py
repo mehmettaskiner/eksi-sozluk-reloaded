@@ -100,8 +100,7 @@ def title(title_id):
 			timestamp = datetime.utcnow(), 
 			user_id = current_user.id,
 			title_id = title_id)
-		db.session.add(entry)
-		db.session.commit()
+		g.user.submit_entry(entry)
 		return redirect(url_for('title', title_id = title_id))
 	return render_template('title.html',
 		title = title.title_name,
@@ -117,10 +116,13 @@ def search():
 		return redirect(url_for('index'))
 	title_name = g.search_form.data['search']
 	title = Title.query.filter_by(title_name = title_name).first()
-	if title == None:
+	if title == None and g.user.is_authenticated():
 		title = Title(title_name = title_name)
 		db.session.add(title)
 		db.session.commit()
+	elif title == None and not g.user.is_authenticated():
+		flash('title not found')
+		return redirect(url_for('index'))
 	return redirect(url_for('title', title_id = title.id))
 
 # entry delete function
@@ -204,8 +206,7 @@ def entry(entry_id):
 			timestamp = datetime.utcnow(), 
 			user_id = current_user.id,
 			title_id = title_id)
-		db.session.add(new_entry)
-		db.session.commit()
+		g.user.submit_entry(new_entry)
 		return redirect(url_for('title', title_id = title_id))
 	return render_template('title.html',
 		title = title.title_name,
