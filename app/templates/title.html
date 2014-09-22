@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="title">
-    <h1 class="title"><a href="{{url_for("title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h1>
+    <h1 class="title"><a href="{{url_for("title", name = ttl.title_name)}}">{{ttl.title_name}}</a></h1>
 </div>
 <ul>
     {% for entry in entries %}

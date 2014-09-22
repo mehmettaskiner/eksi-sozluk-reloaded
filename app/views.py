@@ -15,7 +15,6 @@ from datetime import datetime
 def load_user(id):
     return User.query.get(int(id))
 
-
 @app.before_request
 def before_request():
     g.user = current_user
@@ -94,26 +93,27 @@ def login():
 
 
 # title view page
-@app.route('/title/<title_id>', methods=['GET', 'POST'])
-def title(title_id):
+@app.route('/title/<name>', methods=['GET', 'POST'])
+def title(name):
     form = SubmitEntry()
-    title = Title.query.filter_by(id=title_id).first()
-    entries = Entry.query.filter_by(title_id=title_id).all()
+    title = Title.query.filter_by(title_name=name).first()
+    entries = Entry.query.filter_by(title_id=title.id).all()
     if title == None:
         return redirect(url_for('index'))
     if form.validate_on_submit():
         entry = Entry(body=form.body.data,
                       timestamp=datetime.utcnow(),
                       user_id=current_user.id,
-                      title_id=title_id)
+                      title_id=title.id)
         g.user.submit_entry(entry)
-        return redirect(url_for('title', title_id=title_id))
+        return redirect(url_for('title', name=title.title_name))
     return render_template('title.html',
                            title=title.title_name,
                            ttl=title,
                            entries=entries,
                            form=form,
-                           titles=Title.fetch_non_empty_titles(Title()))
+                           titles=Title.fetch_non_empty_titles(Title())
+                           )
 
 
 # search function
@@ -130,7 +130,7 @@ def search():
     elif title == None and not g.user.is_authenticated():
         flash('title not found')
         return redirect(url_for('index'))
-    return redirect(url_for('title', title_id=title.id))
+    return redirect(url_for('title', name=title.title_name))
 
 
 # entry delete function
@@ -144,7 +144,7 @@ def delete(entry_id):
         flash("entry deleted")
     else:
         flash('you are not allowed to do this.')
-    return redirect(url_for('title', title_id=entry.title_id))
+    return redirect(url_for('title', name=entry.title.title_name))
 
 
 # add buddy function
@@ -219,7 +219,7 @@ def entry(entry_id):
                           user_id=current_user.id,
                           title_id=title_id)
         g.user.submit_entry(new_entry)
-        return redirect(url_for('title', title_id=title_id))
+        return redirect(url_for('title', name=title.title_name))
     return render_template('title.html',
                            title=title.title_name,
                            ttl=title,
