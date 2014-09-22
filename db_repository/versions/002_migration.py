@@ -1,21 +1,21 @@
 from sqlalchemy import *
 from migrate import *
 
-
 from migrate.changeset import schema
+
 pre_meta = MetaData()
 post_meta = MetaData()
 entry = Table('entry', post_meta,
-    Column('id', Integer, primary_key=True, nullable=False),
-    Column('body', String(length=10000)),
-    Column('timestamp', DateTime),
-    Column('user_id', Integer),
-    Column('title_id', Integer),
+              Column('id', Integer, primary_key=True, nullable=False),
+              Column('body', String(length=10000)),
+              Column('timestamp', DateTime),
+              Column('user_id', Integer),
+              Column('title_id', Integer),
 )
 
 title = Table('title', post_meta,
-    Column('id', Integer, primary_key=True, nullable=False),
-    Column('title_name', String(length=50)),
+              Column('id', Integer, primary_key=True, nullable=False),
+              Column('title_name', String(length=50)),
 )
 
 

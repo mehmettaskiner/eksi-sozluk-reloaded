@@ -2,29 +2,37 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="title">
-	<h1 class="title"><a href ="{{url_for("title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h1>
+    <h1 class="title"><a href="{{url_for(" title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h1>
 </div>
-	<ul>
-		{% for entry in entries %}
-		<div class="entry">
-			<li>
-				{{entry.body}}
-				<div class="entry-detail">
-					<time><a href="{{url_for("entry", entry_id=entry.id)}}">{{momentjs(entry.timestamp).format('LLL')}}</a></time>
-					 - <em><a href="{{url_for('author', nickname = entry.author.nickname)}}">@{{entry.author.nickname}}</a></em>{% if g.user.id == entry.author.id or g.user.role == 1 %}<a href="{{url_for('delete', entry_id = entry.id)}}"> - delete</a> {% endif %}
-				</div>
-			</li>
-		</div>
-		{% endfor %}
-	</ul>
-	{% if g.user.is_authenticated() %}
-	<div id="submit_entry">
-		<form action="" method="post" name="submit_entry">
-			{{form.hidden_tag()}}
-			<em>what do you think about <strong>{{ttl.title_name}}</strong></em><br>
-			<p>{{form.body(rows = 8, cols = 80)}}</p>
-			<p><button class="btn btn-primary" type="submit">save</button></p>
-		</form>
-	</div>
-	{% endif %}
+<ul>
+    {% for entry in entries %}
+    <div class="entry">
+        <li>
+            {{entry.body}}
+            <div class="entry-detail">
+                <time><a href="{{url_for(" entry", entry_id=entry.id)}}">{{momentjs(entry.timestamp).format('LLL')}}</a>
+                </time>
+                - <em><a
+                    href="{{url_for('author', nickname = entry.author.nickname)}}">@{{entry.author.nickname}}</a></em>{%
+                if g.user.id == entry.author.id or g.user.role == 1 %}<a
+                    href="{{url_for('delete', entry_id = entry.id)}}"> - delete</a> {% endif %}
+            </div>
+        </li>
+    </div>
+    {% endfor %}
+</ul>
+{% if g.user.is_authenticated() %}
+<div id="submit_entry">
+    <form action="" method="post" name="submit_entry">
+        {{form.hidden_tag()}}
+        <em>what do you think about <strong>{{ttl.title_name}}</strong></em><br>
+
+        <p>{{form.body(rows = 8, cols = 80)}}</p>
+
+        <p>
+            <button class="btn btn-primary" type="submit">save</button>
+        </p>
+    </form>
+</div>
+{% endif %}
 {% endblock %}

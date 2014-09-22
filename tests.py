@@ -1,5 +1,5 @@
 #!flask/bin/python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os
 import unittest
 
@@ -7,6 +7,8 @@ from config import basedir
 from app import app, db
 from app.models import User, Entry, Title
 from datetime import datetime, timedelta
+
+
 class TestCase(unittest.TestCase):
     def setUp(self):
         app.config['TESTING'] = True
@@ -20,8 +22,8 @@ class TestCase(unittest.TestCase):
         db.drop_all()
 
     def test_follow(self):
-        u1 = User(nickname = 'tayyip')
-        u2 = User(nickname = 'kkilicdaroglu')
+        u1 = User(nickname='tayyip')
+        u2 = User(nickname='kkilicdaroglu')
         db.session.add(u1)
         db.session.add(u2)
         db.session.commit()
@@ -43,8 +45,9 @@ class TestCase(unittest.TestCase):
         assert u1.followed.count() == 0
         assert u2.followers.count() == 0
 
+
 if __name__ == '__main__':
-	unittest.main()
+    unittest.main()
 
 
 

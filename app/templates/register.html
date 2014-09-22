@@ -2,22 +2,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h2 class="form-signin-heading">register</h2>
-	<form class="form-signin form-signin-position"action="" method="post" name="register">
-		{{form.hidden_tag()}}
-			{{form.nickname(class="form-control", placeholder="nickname")}}<br>
-			{% for error in form.errors.nickname %}
-				{% if error %}
-					<span style="color: red;">[{{error}}]</span><br>
-				{% endif %}
-			{% endfor %}
-			{{form.password(class="form-control", placeholder="password")}}
-			{% for error in form.errors.password %}
-				{% if error %}
-					<span style="color: red;">[{{error}}]</span>
-				{% endif %}<br>
-			{% endfor %}
-		</p>
-		<button class="btn btn-lg btn-primary btn-block" type="submit">register</button>
-	</form>
+<h2 class="form-signin-heading">register</h2>
+<form class="form-signin form-signin-position" action="" method="post" name="register">
+    {{form.hidden_tag()}}
+    {{form.nickname(class="form-control", placeholder="nickname")}}<br>
+    {% for error in form.errors.nickname %}
+    {% if error %}
+    <span style="color: red;">[{{error}}]</span><br>
+    {% endif %}
+    {% endfor %}
+    {{form.password(class="form-control", placeholder="password")}}
+    {% for error in form.errors.password %}
+    {% if error %}
+    <span style="color: red;">[{{error}}]</span>
+    {% endif %}<br>
+    {% endfor %}
+    </p>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">register</button>
+</form>
 {% endblock %}
