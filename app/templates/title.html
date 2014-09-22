@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="title">
-    <h1 class="title"><a href="{{url_for(" title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h1>
+    <h1 class="title"><a href="{{url_for("title", title_id = ttl.id)}}">{{ttl.title_name}}</a></h1>
 </div>
 <ul>
     {% for entry in entries %}
@@ -10,7 +10,7 @@
         <li>
             {{entry.body}}
             <div class="entry-detail">
-                <time><a href="{{url_for(" entry", entry_id=entry.id)}}">{{momentjs(entry.timestamp).format('LLL')}}</a>
+                <time><a href="{{url_for("entry", entry_id=entry.id)}}">{{momentjs(entry.timestamp).format('LLL')}}</a>
                 </time>
                 - <em><a
                     href="{{url_for('author', nickname = entry.author.nickname)}}">@{{entry.author.nickname}}</a></em>{%
