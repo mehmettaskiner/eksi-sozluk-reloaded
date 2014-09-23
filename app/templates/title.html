@@ -8,7 +8,7 @@
     {% for entry in entries %}
     <div class="entry">
         <li>
-            {{entry.body|safe}}
+            {{entry.body}}
             <div class="entry-detail">
                 <time><a href="{{url_for("entry", entry_id=entry.id)}}">{{momentjs(entry.timestamp).format('LLL')}}</a>
                 </time>
