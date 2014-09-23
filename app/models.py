@@ -9,7 +9,6 @@ followers = db.Table('followers',
                      db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nickname = db.Column(db.String(64), index=True, unique=True)
@@ -65,7 +64,6 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % (self.nickname)
 
-
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(10000))
@@ -83,9 +81,12 @@ class Entry(db.Model):
         self.positive_vote = 0
         self.negative_vote = 0
 
+    def bkz_to_link(self):
+        # TODO: turn bkz's to link
+        pass
+
     def __repr__(self):
         return '<Entry %r>' % (self.body)
-
 
 class Title(db.Model):
     id = db.Column(db.Integer, primary_key=True)

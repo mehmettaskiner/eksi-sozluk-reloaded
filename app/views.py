@@ -11,6 +11,7 @@ from datetime import datetime
 # where you want to show left frame
 #############################################################
 
+
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -58,7 +59,7 @@ def register():
 @app.route('/author/<nickname>')
 def author(nickname):
     author = User.query.filter_by(nickname=nickname).first()
-    if author == None:
+    if author is None:
         flash('Author ' + nickname + ' not found.')
         return redirect(url_for('index'))
     entries = Entry.query.filter_by(user_id=author.id)
@@ -138,14 +139,39 @@ def search():
 @login_required
 def delete(entry_id):
     entry = Entry.query.filter_by(id=entry_id).first()
+    title_name = entry.title.title_name
     if g.user.id == entry.user_id or g.user.role == ROLE_ADMIN:
         db.session.delete(entry)
         db.session.commit()
         flash("entry deleted")
     else:
         flash('you are not allowed to do this.')
-    return redirect(url_for('title', name=entry.title.title_name))
+    return redirect(url_for('title', name=title_name))
 
+
+# entry edit function
+@app.route('/edit/<entry_id>', methods=['POST', 'GET'])
+@login_required
+def edit(entry_id):
+    entry = Entry.query.filter_by(id=entry_id).first()
+    entries = []
+    entries.append(entry)
+    if g.user.id == entry.user_id or g.user.role == ROLE_ADMIN:
+        form = SubmitEntry(body=entry.body)
+        title = Title.query.filter_by(id=entry.title_id).first()
+        if form.validate_on_submit():
+            entry.body = form.body.data
+            db.session.commit()
+            return redirect(url_for('title', name=title.title_name))
+    else:
+        flash("you are not supposed to this.")
+        return redirect(url_for('index'))
+    return render_template('title.html',
+                           title=title.title_name,
+                           ttl=title,
+                           entries=entries,
+                           form=form,
+                           titles=Title.fetch_non_empty_titles(Title()))
 
 # add buddy function
 @app.route('/follow/<nickname>')
@@ -205,7 +231,6 @@ def buddy():
                            titles=followed_entries,
     )
 
-
 @app.route('/entry/<entry_id>', methods=['GET', 'POST'])
 def entry(entry_id):
     form = SubmitEntry()
@@ -227,11 +252,10 @@ def entry(entry_id):
                            form=form,
                            titles=Title.fetch_non_empty_titles(Title()))
 
-
 # logout
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    flash('logout succesfull')
+    flash('logout successful')
     return redirect(url_for('index'))
