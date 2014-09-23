@@ -1,18 +1,18 @@
 from sqlalchemy import *
 from migrate import *
 
-
 from migrate.changeset import schema
+
 pre_meta = MetaData()
 post_meta = MetaData()
 entry = Table('entry', pre_meta,
-    Column('id', INTEGER, primary_key=True, nullable=False),
-    Column('body', VARCHAR(length=10000)),
-    Column('timestamp', DATETIME),
-    Column('user_id', INTEGER),
-    Column('title_id', INTEGER),
-    Column('negative_vote', INTEGER),
-    Column('positive_vote', INTEGER),
+              Column('id', INTEGER, primary_key=True, nullable=False),
+              Column('body', VARCHAR(length=10000)),
+              Column('timestamp', DATETIME),
+              Column('user_id', INTEGER),
+              Column('title_id', INTEGER),
+              Column('negative_vote', INTEGER),
+              Column('positive_vote', INTEGER),
 )
 
 

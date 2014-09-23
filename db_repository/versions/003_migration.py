@@ -1,16 +1,16 @@
 from sqlalchemy import *
 from migrate import *
 
-
 from migrate.changeset import schema
+
 pre_meta = MetaData()
 post_meta = MetaData()
 user = Table('user', post_meta,
-    Column('id', Integer, primary_key=True, nullable=False),
-    Column('nickname', String(length=64)),
-    Column('password', String(length=120)),
-    Column('role', SmallInteger, default=ColumnDefault(0)),
-    Column('last_seen', DateTime),
+             Column('id', Integer, primary_key=True, nullable=False),
+             Column('nickname', String(length=64)),
+             Column('password', String(length=120)),
+             Column('role', SmallInteger, default=ColumnDefault(0)),
+             Column('last_seen', DateTime),
 )
 
 

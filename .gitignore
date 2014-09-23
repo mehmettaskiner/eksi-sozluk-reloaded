@@ -1,4 +1,3 @@
 *.pyc
 /flask
-/flask/*
 app.db

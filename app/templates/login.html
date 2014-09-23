@@ -3,21 +3,21 @@
 
 {% block content %}
 <form class="form-signin form-signin-position" action="" method="post" name="login" role="form">
-	{{form.hidden_tag()}}
-	<h2 class="form-signin-heading">sign in</h2>
-	{{form.nickname(class="form-control", placeholder="nickname")}}<br>
-	{% for error in form.errors.nickname %}
-		{% if error %}
-			<span style="color: red;">[{{error}}]</span><br>
-		{% endif %}
-	{% endfor %}
-	{{form.password(class="form-control", placeholder="password")}}<br>
-	{% for error in form.errors.password %}
-		{% if error %}
-			<span style="color: red;">[{{error}}]</span>
-		{% endif %}<br>
-	{% endfor %}
-	<label class="checkbox">{{form.remember_me}} remember me</label>
-	<button class="btn btn-lg btn-primary btn-block" type="submit">sign in</button>
+    {{form.hidden_tag()}}
+    <h2 class="form-signin-heading">sign in</h2>
+    {{form.nickname(class="form-control", placeholder="nickname")}}<br>
+    {% for error in form.errors.nickname %}
+    {% if error %}
+    <span style="color: red;">[{{error}}]</span><br>
+    {% endif %}
+    {% endfor %}
+    {{form.password(class="form-control", placeholder="password")}}<br>
+    {% for error in form.errors.password %}
+    {% if error %}
+    <span style="color: red;">[{{error}}]</span>
+    {% endif %}<br>
+    {% endfor %}
+    <label class="checkbox">{{form.remember_me}} remember me</label>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">sign in</button>
 </form>
 {% endblock %}
